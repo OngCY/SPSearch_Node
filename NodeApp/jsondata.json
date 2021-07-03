@@ -1,0 +1,32 @@
+[
+    {
+        "postName": "Test Post 2",
+        "postType": "News",
+        "postContent": "This is post about some news"
+    },
+    {
+        "postName": "Test Post 3",
+        "postType": "Press",
+        "postContent": "This is post about some press"
+    },
+    {
+        "postName": "Post about microsoft",
+        "postType": "News",
+        "postContent": "This is post about azure"
+    },
+    {
+        "postName": "Post about amazon and microsoft",
+        "postType": "News",
+        "postContent": "This is post about azure vs aws"
+    },
+    {
+        "postName": "Post about Docker",
+        "postType": "Tech News",
+        "postContent": "This is post about docker"
+    },    
+    {
+        "postName": "Angular Reactive Forms",
+        "postType": "Tech News",
+        "postContent": "This is post about angular"
+    }
+]
