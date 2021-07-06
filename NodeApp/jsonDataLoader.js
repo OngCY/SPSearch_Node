@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 class JsonDataLoader {
 
     //Read data from json file to Queue

@@ -1,9 +1,12 @@
-var client = require('./connection');
+var client = require('./esConnection');
+var propertiesReader = require('properties-reader');
+var properties = propertiesReader('app.properties');
+
 
 class EsIndexManager {
 
     constructor(indexName) {
-        this.indexName = indexName || `hexquoteindex`;
+        this.indexName = indexName || properties.get('es.fallback.indexname');
     }
 
     // 1. Create index

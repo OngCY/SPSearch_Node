@@ -3,6 +3,7 @@ Tap 2021 with nodejs
 
 https://dzone.com/articles/working-with-documents-using-elastic-search-and-no
 https://stackabuse.com/reading-and-writing-json-files-with-node-js
+https://www.npmjs.com/package/@elastic/app-search-node
 
 # Elastic Search Demo
 

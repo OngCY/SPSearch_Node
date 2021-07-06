@@ -13,6 +13,8 @@
   "author": "hexquote.com",
   "license": "ISC",
   "dependencies": {
-    "elasticsearch": "^16.7.1"
+    "@elastic/app-search-node": "^7.13.1",
+    "elasticsearch": "^16.7.2",
+    "properties-reader": "^2.2.0"
   }
 }

@@ -1,21 +1,27 @@
 const esIndexManager = require('./esIndexManager');
 const jsonDataLoader = require('./jsonDataLoader');
+var propertiesReader = require('properties-reader');
+var properties = propertiesReader('app.properties');
 
-//Client Code
 
-let indexManager = new esIndexManager("blog"); //index blog
-importJsonData(); //read json file and add data to elastic-search
+let indexManager = new esIndexManager(properties.get('es.indexname')); //set index
+
+if(!indexManager.indexExists(properties.get('es.indexname')))
+    indexManager.createIndex();
+
+importJsonData();
 
 function importJsonData(){
-    let documents = jsonDataLoader.loadJsonFile('jsondata.json');
+    let documents = jsonDataLoader.loadJsonFile(properties.get('json.filename'));
+    
     for (const doc of documents) {
-        // console.log('doc: ',doc);
-        indexManager.addDocument(null, "posts", JSON.stringify(doc));
+        console.log('doc: ',doc);
+        indexManager.addDocument(null, "_doc", JSON.stringify(doc));
     }
 }
 
 
-
+/*
 function AddDocumentTest(){
 //indexManager.createIndex(); //create Index
 
@@ -38,3 +44,4 @@ class Post {
         this.postContent = postContent;
     }
 }
+*/
