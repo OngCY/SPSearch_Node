@@ -19,22 +19,25 @@ var job = new cronJob(properties.get('cron.frequency'), function() {
 //job.start();
 
 function processDirectory(){
-    var directory = properties.get('json.dir');
-    console.log("json dir: " + directory);
+    var jsonDir = properties.get('json.dir');
+    var processedDir = properties.get('json.processeddir');
 
     //read the directory
-    fs.readdir(directory, function (err, files) {
+    fs.readdir(jsonDir, function (err, files) {
         if (err) {
             return console.log('Unable to scan directory: ' + err);
         } 
         
-        //process json files
+        //process json files and move them after that
         files.forEach(function (file) {
-            var filename =  directory + "\\" + file;
-            console.log("Processing file: " + filename); 
+            var preProcessedFile =  jsonDir + "\\" + file;
+            var postProcessedFile = processedDir + "\\" + file;
+            console.log("Processing file: " + preProcessedFile); 
             
-            if(path.extname(file) == '.json')
-                exportJsonToEs(filename);
+            if(path.extname(file) == '.json'){
+                exportJsonToEs(preProcessedFile);
+                moveFile(preProcessedFile, postProcessedFile);
+            }
         });
     });
 }
@@ -46,6 +49,17 @@ function exportJsonToEs(file){
         console.log('doc: ',JSON.stringify(doc));
         indexManager.addDocument(null, "_doc", JSON.stringify(doc));
     }
+}
+
+function moveFile(sourcePath,destPath){
+    fs.rename(sourcePath, destPath, function (err) {
+        if (err){
+            return console.log('Unable to move file: ' + err);
+        }
+        
+        console.log('Successfully moved to: ' + destPath);
+      }
+    )
 }
 
 /*
