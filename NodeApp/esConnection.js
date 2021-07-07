@@ -1,4 +1,5 @@
 const elasticsearch=require('elasticsearch');
+const AppSearchClient = require('@elastic/app-search-node')
 const propertiesReader = require('properties-reader');
 const properties = propertiesReader('app.properties');
 
@@ -10,8 +11,8 @@ var client = new elasticsearch.Client( {
 });
 
 //App Search connection
-/*const apiKey = 'private-mu75psc5egt9ppzuycnc2mc3'
-const baseUrlFn = () => 'http://localhost:3002/api/as/v1/'
-const client = new AppSearchClient(undefined, apiKey, baseUrlFn)*/
+const apiKey = properties.get('appsearch.apikey');
+const baseUrlFn = () => properties.get('appsearch.host');
+var appSearchClient = new AppSearchClient(undefined, apiKey, baseUrlFn)
 
-module.exports = client;  
+module.exports = {client, appSearchClient};

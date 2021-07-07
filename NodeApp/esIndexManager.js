@@ -1,36 +1,37 @@
-const client = require('./esConnection');
+const es = require('./esConnection');
 const propertiesReader = require('properties-reader');
 const properties = propertiesReader('app.properties');
 
 
 class EsIndexManager {
 
-    constructor(indexName) {
+    constructor(indexName, engineName) {
         this.indexName = indexName || properties.get('es.fallback.indexname');
+        this.engineName = engineName || properties.get('appsearch.fallback.enginename');
     }
 
     // 1. Create index
     createIndex() {
-        return client.indices.create({
+        return es.client.indices.create({
             index: this.indexName
         });
     }
 
     // 2. Check if index exists
     indexExists() {
-        return client.indices.exists({
+        return es.client.indices.exists({
             index: this.indexName
         });
     }
 
     // 3. Delete Index by index-name
     deleteIndex() {
-        return client.indices.delete({ index: this.indexName });
+        return es.client.indices.delete({ index: this.indexName });
     }
 
     // 4. Add/Update a document
     addDocument(_id, _docType, _payload) {
-        client.index({
+        es.client.index({
             index: this.indexName,
             type: _docType,
             id: _id,
@@ -44,7 +45,13 @@ class EsIndexManager {
             }
         })
     }
-}
 
+    // Add a document to app search
+    addDocumentToAppSearch(_payload){
+        es.appSearchClient.indexDocuments(this.engineName, _payload)
+            .then(response => console.log(response))
+            .catch(error => console.log(error))
+    }
+}
 
 module.exports = EsIndexManager;

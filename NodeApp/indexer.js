@@ -7,7 +7,7 @@ const path = require('path');
 const fs = require('fs');
 
 
-let indexManager = new esIndexManager(properties.get('es.indexname')); //set index
+let indexManager = new esIndexManager(properties.get('es.indexname'), properties.get('appsearch.enginename'));
 
 if(!indexManager.indexExists(properties.get('es.indexname')))
     indexManager.createIndex();
@@ -34,16 +34,27 @@ function processDirectory(){
             console.log("Processing file: " + filename); 
             
             if(path.extname(file) == '.json')
-                importJsonData(filename);
+                exportJsonToEs(filename);
         });
     });
 }
 
-function importJsonData(file){
+function exportJsonToEs(file){
     let documents = jsonDataLoader.loadJsonFile(file);
     
     for (const doc of documents) {
-        console.log('doc: ',doc);
+        console.log('doc: ',JSON.stringify(doc));
         indexManager.addDocument(null, "_doc", JSON.stringify(doc));
     }
 }
+
+/*
+function exportJsonToAppSearch(file){
+    let documents = jsonDataLoader.loadJsonFile(file);
+
+    for(const doc of documents){
+        console.log('doc: ',JSON.stringify(doc));
+        indexManager.addDocumentToAppSearch(JSON.stringify(doc));
+    }
+}
+*/
