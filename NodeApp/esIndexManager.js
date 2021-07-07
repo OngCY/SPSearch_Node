@@ -1,6 +1,6 @@
-var client = require('./esConnection');
-var propertiesReader = require('properties-reader');
-var properties = propertiesReader('app.properties');
+const client = require('./esConnection');
+const propertiesReader = require('properties-reader');
+const properties = propertiesReader('app.properties');
 
 
 class EsIndexManager {

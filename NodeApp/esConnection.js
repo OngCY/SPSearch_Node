@@ -1,6 +1,6 @@
-var elasticsearch=require('elasticsearch');
-var propertiesReader = require('properties-reader');
-var properties = propertiesReader('app.properties');
+const elasticsearch=require('elasticsearch');
+const propertiesReader = require('properties-reader');
+const properties = propertiesReader('app.properties');
 
 
 var client = new elasticsearch.Client( {  

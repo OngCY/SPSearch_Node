@@ -14,7 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "@elastic/app-search-node": "^7.13.1",
+    "cron": "^1.8.2",
     "elasticsearch": "^16.7.2",
+    "moment-timezone": "^0.5.33",
     "properties-reader": "^2.2.0"
   }
 }
