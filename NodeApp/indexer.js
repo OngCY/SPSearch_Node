@@ -6,11 +6,10 @@ const cronJob = require('cron').CronJob;
 const path = require('path');
 const fs = require('fs');
 
+//the dev ECE uses a self signed cert so disable this Nodejs setting
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 let indexManager = new esIndexManager(properties.get('es.indexname'), properties.get('appsearch.enginename'));
-
-if(!indexManager.indexExists(properties.get('es.indexname')))
-    indexManager.createIndex();
 
 var job = new cronJob(properties.get('cron.frequency'), function() {
         console.log('Cron job started');
@@ -35,11 +34,20 @@ function processDirectory(){
             console.log("Processing file: " + preProcessedFile); 
             
             if(path.extname(file) == '.json'){
-                exportJsonToEs(preProcessedFile);
+                exportJsonToAppSearch(preProcessedFile);
                 moveFile(preProcessedFile, postProcessedFile);
             }
         });
     });
+}
+
+function exportJsonToAppSearch(file){
+    let documents = jsonDataLoader.loadJsonFile(file);
+
+    for(const doc of documents){
+        console.log(doc);
+        indexManager.addDocumentToAppSearch(doc);
+    }
 }
 
 function exportJsonToEs(file){
@@ -56,19 +64,7 @@ function moveFile(sourcePath,destPath){
         if (err){
             return console.log('Unable to move file: ' + err);
         }
-        
         console.log('Successfully moved to: ' + destPath);
       }
     )
 }
-
-/*
-function exportJsonToAppSearch(file){
-    let documents = jsonDataLoader.loadJsonFile(file);
-
-    for(const doc of documents){
-        console.log('doc: ',JSON.stringify(doc));
-        indexManager.addDocumentToAppSearch(JSON.stringify(doc));
-    }
-}
-*/

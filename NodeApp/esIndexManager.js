@@ -48,7 +48,7 @@ class EsIndexManager {
 
     // Add a document to app search
     addDocumentToAppSearch(_payload){
-        es.appSearchClient.indexDocuments(this.engineName, _payload)
+        es.client.indexDocuments(this.engineName, _payload)
             .then(response => console.log(response))
             .catch(error => console.log(error))
     }
