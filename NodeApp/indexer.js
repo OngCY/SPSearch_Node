@@ -11,15 +11,15 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 
 let indexManager = new esIndexManager(properties.get('es.indexname'), properties.get('appsearch.enginename'));
 
-var job = new cronJob(properties.get('cron.frequency'), function() {
+let job = new cronJob(properties.get('cron.frequency'), function() {
         console.log('Cron job started');
         processDirectory();
 }, null, true, properties.get('cron.timezone'));
 //job.start();
 
 function processDirectory(){
-    var jsonDir = properties.get('json.dir');
-    var processedDir = properties.get('json.processeddir');
+    let jsonDir = properties.get('json.dir');
+    let processedDir = properties.get('json.processeddir');
 
     //read the directory
     fs.readdir(jsonDir, function (err, files) {
@@ -29,8 +29,8 @@ function processDirectory(){
         
         //process json files and move them after that
         files.forEach(function (file) {
-            var preProcessedFile =  jsonDir + "\\" + file;
-            var postProcessedFile = processedDir + "\\" + file;
+            let preProcessedFile =  jsonDir + "\\" + file;
+            let postProcessedFile = processedDir + "\\" + file;
             console.log("Processing file: " + preProcessedFile); 
             
             if(path.extname(file) == '.json'){
