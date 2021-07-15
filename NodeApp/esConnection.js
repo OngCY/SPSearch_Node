@@ -1,5 +1,5 @@
 const elasticsearch = require('elasticsearch');
-const AppSearchClient = require('@elastic/app-search-node')
+const AppSearchClient = require('@elastic/app-search-node');
 const propertiesReader = require('properties-reader');
 const properties = propertiesReader('app.properties');
 

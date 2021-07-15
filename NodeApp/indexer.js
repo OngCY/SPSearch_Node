@@ -1,5 +1,6 @@
 const esIndexManager = require('./esIndexManager');
 const jsonDataLoader = require('./jsonDataLoader');
+const logger = require('./logger');
 const propertiesReader = require('properties-reader');
 const properties = propertiesReader('app.properties');
 const cronJob = require('cron').CronJob;
@@ -12,10 +13,11 @@ process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 let indexManager = new esIndexManager(properties.get('es.indexname'), properties.get('appsearch.enginename'));
 
 let job = new cronJob(properties.get('cron.frequency'), function() {
+        logger.info("Cron job started");
         console.log('Cron job started');
         processDirectory();
 }, null, true, properties.get('cron.timezone'));
-//job.start();
+job.start();
 
 function processDirectory(){
     let jsonDir = properties.get('json.dir');
@@ -24,6 +26,7 @@ function processDirectory(){
     //read the directory
     fs.readdir(jsonDir, function (err, files) {
         if (err) {
+            logger.error("Unable to scan directory: " + err);
             return console.log('Unable to scan directory: ' + err);
         } 
         
@@ -31,7 +34,8 @@ function processDirectory(){
         files.forEach(function (file) {
             let preProcessedFile =  jsonDir + "\\" + file;
             let postProcessedFile = processedDir + "\\" + file;
-            console.log("Processing file: " + preProcessedFile); 
+            console.log("Processing file: " + preProcessedFile);
+            logger.info("Processing file: " + preProcessedFile);
             
             if(path.extname(file) == '.json'){
                 exportJsonToAppSearch(preProcessedFile);
@@ -45,6 +49,7 @@ function exportJsonToAppSearch(file){
     let documents = jsonDataLoader.loadJsonFile(file);
 
     for(const doc of documents){
+        logger.info(doc);
         console.log(doc);
         indexManager.addDocumentToAppSearch(doc);
     }
@@ -54,7 +59,8 @@ function exportJsonToEs(file){
     let documents = jsonDataLoader.loadJsonFile(file);
     
     for (const doc of documents) {
-        console.log('doc: ',JSON.stringify(doc));
+        logger.info(JSON.stringify(doc));
+        console.log(JSON.stringify(doc));
         indexManager.addDocument(null, "_doc", JSON.stringify(doc));
     }
 }
@@ -62,8 +68,10 @@ function exportJsonToEs(file){
 function moveFile(sourcePath,destPath){
     fs.rename(sourcePath, destPath, function (err) {
         if (err){
+            logger.error('Unable to move file: ' + err);
             return console.log('Unable to move file: ' + err);
         }
+        logger.info('Successfully moved to: ' + destPath);
         console.log('Successfully moved to: ' + destPath);
       }
     )
