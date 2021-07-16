@@ -38,7 +38,8 @@ function processDirectory(){
             logger.info("Processing file: " + preProcessedFile);
             
             if(path.extname(file) == '.json'){
-                exportJsonToAppSearch(preProcessedFile);
+                //exportJsonToAppSearch(preProcessedFile);
+                exportJsonToEs(preProcessedFile);
                 moveFile(preProcessedFile, postProcessedFile);
             }
         });
@@ -58,7 +59,7 @@ function exportJsonToAppSearch(file){
 function exportJsonToEs(file){
     let documents = jsonDataLoader.loadJsonFile(file);
     
-    for (const doc of documents) {
+   for (const doc of documents) {
         logger.info(JSON.stringify(doc));
         console.log(JSON.stringify(doc));
         indexManager.addDocument(null, "_doc", JSON.stringify(doc));
