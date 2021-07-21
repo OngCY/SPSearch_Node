@@ -28,7 +28,8 @@
     "pdf-text": "^0.4.0",
     "properties-reader": "^2.2.0",
     "tika-text-extract": "^2.4.0",
-    "update-json-file": "^1.1.1"
+    "update-json-file": "^1.1.1",
+    "utf8": "^3.0.0"
   },
   "devDependencies": {},
   "description": ""
