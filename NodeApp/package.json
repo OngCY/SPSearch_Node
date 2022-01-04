@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@elastic/app-search-node": "^7.13.1",
+    "@elastic/workplace-search-node": "^0.4.0",
     "base64topdf": "^1.1.8",
     "cron": "^1.8.2",
     "edit-json-file": "^1.6.0",

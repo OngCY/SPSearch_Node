@@ -1,13 +1,12 @@
 const fs = require('fs');
 const logger = require('./logger');
 
-
 class JsonDataLoader {
 
-    //Read data from json file to Queue
+    //Read data from json file 
     loadJsonFile(jsonFileName) {
-        console.log('Processing json file: ' + jsonFileName);
-        logger.info('Processing json file: ' + jsonFileName);
+        console.log("Processing file: " + jsonFileName);
+        logger.info("Processing file: " + jsonFileName);
 
         let jsonData = fs.readFileSync(jsonFileName);
         let document = JSON.parse(jsonData);
@@ -28,11 +27,11 @@ class JsonDataLoader {
             
         document.attachment_url = attachmentURL;
         document.attachment_base64 = attachmentTxt;
-            
-        console.log(attachmentTxt);
-        logger.info('Decoded b64 attachment: ' + attachmentTxt);
-
+      
         fs.writeFileSync(jsonFileName, JSON.stringify(document));
+
+        console.log("Finished processing!");
+        logger.info("Finished processing!");
         
         return document;
     }

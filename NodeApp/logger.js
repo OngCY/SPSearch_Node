@@ -1,7 +1,7 @@
 const log4js = require("log4js");
 
 log4js.configure({
-  appenders: { tap: { type: "file", filename: "../logs/tap.log" } },
+  appenders: { tap: { type: "dateFile", filename: "../logs/tap.log" } },
   categories: { default: { appenders: ["tap"], level: "info" } }
 });
  
